@@ -1,0 +1,51 @@
+version: "3.3"
+services:
+  app:
+    build:
+      args:
+        user: dockerDemo
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: laravel-dcoker-demo
+    container_name: laravel-docker-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+      - ./laravel-docker-compose/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - laravel-docker-net
+
+  db:
+    image: mysql:5.6
+    container_name: laravel-docker-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./laravel-docker-compose/mysql:/docker-entrypoint-initdb.d
+      - ./laravel-docker-compose/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - laravel-docker-net
+
+  nginx:
+    image: nginx:alpine
+    container_name: laravel-docker-nginx
+    restart: unless-stopped
+    ports:
+      - 9000:80
+    volumes:
+      - ./:/var/www
+      - ./laravel-docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - laravel-docker-net
+
+networks:
+  laravel-docker-net:
+    driver: bridge
