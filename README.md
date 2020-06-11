@@ -20,6 +20,10 @@ cp .env.example .env
 ```
 docker-compose build app
 ```
+## 清除项目配置缓存`bootstrap/cache/config.php`
+```
+php artisan cache:config
+```
 ## 启动应用
 ```
 docker-compose up -d
@@ -67,3 +71,12 @@ composer config --unset repos.packagist
 composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 composer config -g --unset repos.packagist
 ```
+3.导入数据库数据到容器
+```
+sudo docker-composer exec  container_name mysql -uroot -p  dbname < data.sql
+```
+4.redis配置时修改.env文件,后面主机名修改为您的容器名，我这里是`redis`
+```
+HOST_REDIS=127.0.0.1 -> HOST_REDIS=redis
+```
+

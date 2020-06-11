@@ -33,7 +33,13 @@ services:
       - ./laravel-docker-compose/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - laravel-docker-net
-
+  redis:
+    image: redis:latest
+    #    hostname: docker-redis
+    container_name: laravel-docker-redis
+    restart: unless-stopped
+    networks:
+      - laravel-docker-net
   nginx:
     image: nginx:alpine
     container_name: laravel-docker-nginx
