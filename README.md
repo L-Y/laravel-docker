@@ -77,6 +77,10 @@ sudo docker-composer exec  container_name mysql -uroot -p  dbname < data.sql
 ```
 4.redis配置时修改.env文件,后面主机名修改为您的容器名，我这里是`redis`
 ```
-HOST_REDIS=127.0.0.1 -> HOST_REDIS=redis
+REDIS_HOST=127.0.0.1 -> REDIS_HOST=redis
 ```
 
+5.mysql配置时修改.env文件,后面主机名修改为您的容器名，我这里是`db`
+```
+DB_HOST=127.0.0.1 -> DB_HOST=db
+```
